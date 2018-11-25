@@ -1,0 +1,6 @@
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.Common.Entities\bin\Debug\Sivoplyasov.FinalProject.Common.Entities.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.Common.Entities\bin\Debug\Sivoplyasov.FinalProject.Common.Entities.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.Common.Entities\obj\Debug\Sivoplyasov.FinalProject.Common.Entities.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.Common.Entities\obj\Debug\Sivoplyasov.FinalProject.Common.Entities.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.Common.Entities\obj\Debug\Sivoplyasov.FinalProject.Common.Entities.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.Common.Entities\obj\Debug\Sivoplyasov.FinalProject.Common.Entities.pdb
