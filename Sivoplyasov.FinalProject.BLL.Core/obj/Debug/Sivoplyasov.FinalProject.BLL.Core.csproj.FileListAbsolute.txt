@@ -1,0 +1,17 @@
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.BLL.Core.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.BLL.Core.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.BLL.Contracts.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.Common.Entities.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.DAL.Contracts.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.DAL.DB.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.BLL.Contracts.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.Common.Entities.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.DAL.Contracts.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.DAL.Contracts.dll.config
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.DAL.DB.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\bin\Debug\Sivoplyasov.FinalProject.DAL.DB.dll.config
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\obj\Debug\Sivoplyasov.FinalProject.BLL.Core.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\obj\Debug\Sivoplyasov.FinalProject.BLL.Core.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\obj\Debug\Sivoplyasov.FinalProject.BLL.Core.csproj.CopyComplete
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\obj\Debug\Sivoplyasov.FinalProject.BLL.Core.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Core\obj\Debug\Sivoplyasov.FinalProject.BLL.Core.pdb
