@@ -1,0 +1,13 @@
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\bin\Debug\Sivoplyasov.FinalProject.DAL.DB.dll.config
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\bin\Debug\Sivoplyasov.FinalProject.DAL.DB.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\bin\Debug\Sivoplyasov.FinalProject.DAL.DB.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\bin\Debug\Sivoplyasov.FinalProject.Common.Entities.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\bin\Debug\Sivoplyasov.FinalProject.DAL.Contracts.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\bin\Debug\Sivoplyasov.FinalProject.Common.Entities.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\bin\Debug\Sivoplyasov.FinalProject.DAL.Contracts.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\bin\Debug\Sivoplyasov.FinalProject.DAL.Contracts.dll.config
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\obj\Debug\Sivoplyasov.FinalProject.DAL.DB.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\obj\Debug\Sivoplyasov.FinalProject.DAL.DB.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\obj\Debug\Sivoplyasov.FinalProject.DAL.DB.csproj.CopyComplete
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\obj\Debug\Sivoplyasov.FinalProject.DAL.DB.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.DAL.DB\obj\Debug\Sivoplyasov.FinalProject.DAL.DB.pdb
