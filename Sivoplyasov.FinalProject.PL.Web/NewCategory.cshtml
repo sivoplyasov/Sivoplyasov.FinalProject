@@ -1,0 +1,61 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@using Sivoplyasov.FinalProject.Common.Entities;
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login");
+    }
+    Layout = "~/_Layout.cshtml";
+
+    var SectionId = 0;
+    int.TryParse(Request["SectionId"], out SectionId);
+
+    if (IsPost)
+    {
+        string name = Request["categoryName"];
+        string discription = Request["categoryDescription"];
+
+        if (string.IsNullOrEmpty(name) || LogicProvider.SectionLogic.GetSectionById(SectionId) == null)
+        {
+            Response.SetStatus(HttpStatusCode.BadRequest);
+        }
+        try
+        {
+            LogicProvider.CategoryLogic.Add(new Category
+            {
+                Name = name,
+                Description = discription,
+                SectionId = SectionId
+            });
+        }
+        catch (ArgumentException)
+        {
+            Response.SetStatus(HttpStatusCode.InternalServerError);
+        }
+
+        Response.Redirect("~");
+    }
+}
+<div>
+    <form action="~/NewCategory" id="sectionForm" method="post" role="form">
+        <label class="control-label" for="name">
+            Заголовок:
+        </label>
+        <div class="form-group" id="name-group">
+            <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="Заголовок">
+        </div>
+        <label class="control-label" for="description">
+            Описание:
+        </label>
+        <div class="form-group" id="description-group">
+            <input type="text" class="form-control" id="categoryDescription" name="categoryDescription" placeholder="Описание">
+            <input type="hidden" id="sectionId" name="SectionId" value="@SectionId">
+        </div>
+        <button type="submit" class="btn btn-default text-center">Создать категорию</button>
+    </form>
+</div>
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.js"></script>
+    <script src="~/Content/js/category-validation.js"></script>
+}

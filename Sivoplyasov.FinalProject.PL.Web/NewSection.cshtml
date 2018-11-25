@@ -1,0 +1,45 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@using Sivoplyasov.FinalProject.Common.Entities
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login");
+    }
+    Layout = "~/_Layout.cshtml";
+
+    if (IsPost)
+    {
+        var name = Request["sectionName"];
+
+        if (string.IsNullOrEmpty(name))
+        {
+            Response.SetStatus(HttpStatusCode.BadRequest);
+        }
+        try
+        {
+            LogicProvider.SectionLogic.Add(new Section { Name = name });
+        }
+        catch (ArgumentException)
+        {
+            Response.SetStatus(HttpStatusCode.InternalServerError);
+        }
+
+        Response.Redirect("~");
+    }
+}
+<div>
+    <form action="~/NewSection" id="sectionForm" method="post" role="form">
+        <label class="control-label" for="name">
+            Для секции требуется лишь заголовок. Заголовок:
+        </label>
+        <div class="form-group" id="name-group">
+            <input type="text" class="form-control" id="sectionName" name="sectionName" placeholder="Заголовок">
+        </div>
+        <button type="submit" class="btn btn-default text-center">Создать секцию</button>
+    </form>
+</div>
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.js"></script>
+    <script src="~/Content/js/section-validation.js"></script>
+}

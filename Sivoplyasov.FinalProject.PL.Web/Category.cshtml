@@ -1,0 +1,134 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@{
+    Layout = "~/_Layout.cshtml";
+    var categoryId = 0;
+    int.TryParse(Request["Id"], out categoryId);
+    if (categoryId < 0)
+    {
+        Response.SetStatus(HttpStatusCode.BadRequest);
+    }
+    var category = LogicProvider.CategoryLogic.GetCategoryById(categoryId);
+    if (category == null)
+    {
+        Response.SetStatus(HttpStatusCode.NotFound);
+    }
+    Page.Title = category.Name;
+    var topics = LogicProvider.TopicLogic.GetTopicsByCategoryId(category.Id);
+    var section = LogicProvider.SectionLogic.GetSectionById(category.SectionId);
+}
+<ul class="breadcrumb row">
+    <li><a href="/">Главная</a></li>
+    <li><a href="~/Section?Id=@(section.Id)">@(section.Name)</a></li>
+    <li class="active">@(category.Name)</li>
+</ul>
+<link href="~/Content/css/bootstrap-overrides.css" rel="stylesheet" />
+<link href="~/Content/css/section-styles.css" rel="stylesheet" />
+<div class="row buttons-row">
+    @if (User.IsInRole("Admin"))
+    {
+        if (category.CountOfTopics == 0)
+        {
+            <div class="col-xs-2 col-xs-offset-9">
+                <form action="~/RemoveCategory" method="post">
+                    <button type="submit" class="btn btn-danger">Удалить категорию</button>
+                    <input type="hidden" name="Id" value="@(category.Id)" />
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="col-xs-2 col-xs-offset-9">
+                <button onclick=showDeleteAlert() class="btn btn-danger">Удалить категорию</button>
+            </div>
+        }
+        <div class="col-xs-1">
+            <form action="~/NewTopic" method="get">
+                <button type="submit" class="btn btn-primary">Новая тема</button>
+                <input type="hidden" name="CategoryId" value="@(category.Id)" />
+            </form>
+        </div>
+    }
+    else
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            <div class="col-xs-1 col-xs-offset-11">
+                <form action="~/NewTopic" method="get">
+                    <button type="submit" class="btn btn-primary">Новая тема</button>
+                    <input type="hidden" name="CategoryId" value="@(category.Id)" />
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="col-xs-1 col-xs-offset-11">
+                <button onclick=showTopicAlert() class="btn btn-primary">Новая тема</button>
+            </div>
+        }
+    }
+
+</div>
+@if (topics.Count() == 0)
+{
+    <div class="row alert alert-danger alert-div text-center">В этой секции еще нет <strong>ни одной темы!</strong> Вы можете исправить ситуацию, создав новую!</div>
+}
+else
+{
+    <div class="row section">
+        <div class="col-xs-12 section-header">
+            <form action="~/Category" method="get">
+                <button type="submit" class="row btn btn-link"><h4>@(category.Name)</h4></button>
+                <input type="hidden" name="Id" value="@(category.Id)" />
+            </form>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Имя темы:</th>
+                    <th scope="col">Сообщений:</th>
+                    <th scope="col">Последнее сообщение:</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var topic in topics)
+                {
+                    <tr>
+                        <th scope="row">
+                            <h4><a href="~/Topic?id=@topic.Id">@topic.Name</a></h4>
+                            <h5>@topic.Description</h5>
+                        </th>
+                        <td class="align-middle">@topic.CountOfPosts</td>
+                        <td class="align-middle">
+                            @if (topic.LastPost != null)
+                            {
+                                <div class="row">@category.LastPost.DateOfCreation</div>
+                                {
+                                    var user = LogicProvider.UserLogic.GetUserById(category.LastPost.User_Id);
+                                    <div class="row">Автор: <a href="~/User?Id=@user.Id">@user.Name</a></div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="row">Нет сообщений</div>
+                            }
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@RenderPage("ParticalPages/_CategoryModals.cshtml")
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function showTopicAlert() {
+            $("#newTopicAlert").modal('show');
+        };
+        function showDeleteAlert() {
+            $("#deleteAlert").modal('show');
+        }
+    </script>
+}

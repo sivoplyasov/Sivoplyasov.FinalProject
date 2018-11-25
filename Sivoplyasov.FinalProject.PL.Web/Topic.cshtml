@@ -1,0 +1,214 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@using Sivoplyasov.FinalProject.Common.Entities
+@{
+    Layout = "~/_Layout.cshtml";
+    var topicId = 0;
+    int.TryParse(Request["Id"], out topicId);
+    if (topicId < 0)
+    {
+        Response.SetStatus(HttpStatusCode.BadRequest);
+    }
+    var topic = LogicProvider.TopicLogic.GetTopicById(topicId);
+    if (topic == null)
+    {
+        Response.SetStatus(HttpStatusCode.NotFound);
+    }
+    User currentUser = null;
+    if (User.Identity.IsAuthenticated)
+    {
+        currentUser = LogicProvider.UserLogic.GetUserByLogin(User.Identity.Name);
+    }
+    Page.Title = topic.Name;
+    var category = LogicProvider.CategoryLogic.GetCategoryById(topic.Category_Id);
+    var section = LogicProvider.SectionLogic.GetSectionById(category.SectionId);
+}
+
+<link href="~/Content/css/post-styles.css" rel="stylesheet" />
+<ul class="breadcrumb row">
+    <li><a href="/">Главная</a></li>
+    <li><a href="~/Section?Id=@(section.Id)">@(section.Name)</a></li>
+    <li><a href="~/Category?Id=@(category.Id)">@(category.Name)</a></li>
+    <li class="active">@(topic.Name)</li>
+</ul>
+
+<div class="row buttons-row">
+    @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+    {
+        if (topic.CountOfPosts == 0)
+        {
+            <div class="col-xs-1 col-xs-offset-8">
+                <form action="~/RemoveTopic" method="post">
+                    <button type="submit" class="btn btn-danger">Удалить тему</button>
+                    <input type="hidden" name="TopicId" value="@(topic.Id)" />
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="col-xs-1 col-md-offset-8">
+                <button onclick=showDeleteAlert() class="btn btn-danger">Удалить тему</button>
+            </div>
+        }
+
+        if (!topic.IsClosed)
+        {
+            <div class="col-xs-1">
+                <form action="~/CloseTopic" method="post">
+                    <button type="submit" class="btn btn-warning">Закрыть тему</button>
+                    <input type="hidden" name="Id" value="@(topic.Id)" />
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="col-xs-1">
+                <form action="~/CloseTopic" method="post">
+                    <button type="submit" class="btn btn-success">Открыть тему</button>
+                    <input type="hidden" name="Id" value="@(topic.Id)" />
+                </form>
+            </div>
+        }
+
+        <div class="col-xs-1">
+            <form action="~/NewPost" method="get">
+                <button type="submit" class="btn btn-primary">Новый пост</button>
+                <input type="hidden" name="TopicId" value="@(topic.Id)" />
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="col-xs-1 col-xs-offset-10">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <form action="~/NewPost" method="get">
+                    <button type="submit" class="btn btn-primary">Новый пост</button>
+                    <input type="hidden" name="TopicId" value="@(topic.Id)" />
+                </form>
+            }
+            else
+            {
+                <button onclick=showTopicAlert() class="btn btn-primary">Новый пост</button>
+            }
+        </div>
+    }
+</div>
+
+@if (topic.IsClosed)
+{
+    <div class="row alert alert-warning alert-div text-center">Тема закрыта.</div>
+}
+
+@foreach (var post in LogicProvider.PostLogic.GetPostsByTopicId(topic.Id))
+{
+    var user = LogicProvider.UserLogic.GetUserById(post.User_Id);
+
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="row post" id="@post.Id">
+            <div class="row post-header">
+                <div class="col-xs-3 col-md-1">
+                    <img src="~/Content/images/avatars/no-avatar.png" alt="useravatar" class="avatar img-responsive img-rounded">
+                </div>
+                <div class="col-xs-3 col-md-2 user-name">
+                    <a href="~/User?Id=@user.Id"><h4>@user.Name</h4></a>
+                    <span class="badge badge-primary">Posts: @user.CountOfPosts</span>
+                    <span class="badge badge-primary">@user.Role</span>
+                </div>
+                <div class="col-xs-5 col-xs-offset-1 col-md-3 col-md-offset-6">
+                    <h5>@post.DateOfCreation.ToString()</h5>
+                </div>
+            </div>
+            <div class="row textarea">
+                @if (post.Reply_Id != null)
+                {
+                    var replyedPost = LogicProvider.PostLogic.GetPostById((int)post.Reply_Id);
+                    if (replyedPost != null)
+                    {
+                        var authorOfRepPost = LogicProvider.UserLogic.GetUserById(replyedPost.User_Id);
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                Ответ на <a href="#@post.Reply_Id">пост от @@@authorOfRepPost.Name</a>
+                            </div>
+                        </div>
+                    }
+                }
+                <div class="message">
+                    @post.PostText
+                </div>
+            </div>
+            <div class="row post-footer">
+                @if (currentUser != null)
+                {
+                    if (post.User_Id == currentUser.Id)
+                    {
+                        <div class="col-xs-2 col-md-offset-7">
+                            <form action="~/RemovePost" method="post">
+                                <button type="submit" class="btn btn-danger">Удалить пост</button>
+                                <input type="hidden" name="Id" value="@post.Id" />
+                                <input type="hidden" name="ReturnUrl" value="~/Topic?id=@topicId" />
+                            </form>
+                        </div>
+
+                        <div class="col-xs-2">
+                            <form action="~/EditPost" method="get">
+                                <button type="submit" class="btn btn-info">Изменить пост</button>
+                                <input type="hidden" name="Id" value="@post.Id" />
+                            </form>
+                        </div>
+
+                        <div class="col-xs-1">
+                            <form action="~/NewPost" method="get">
+                                <input type="hidden" name="TopicId" value="@topic.Id" />
+                                <input type="hidden" name="ReplyTo" value="@post.Id" />
+                                <button type="submit" class="btn btn-primary">Ответить</button>
+                            </form>
+                        </div>
+                    }
+                    else if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                    {
+                        <div class="col-xs-1 col-xs-offset-10">
+                            <form action="~/RemovePost" method="post">
+                                <input type="hidden" name="Id" value="@post.Id" />
+                                <input type="hidden" name="ReturnUrl" value="~/Topic?id=@topicId" />
+                                <button type="submit" class="btn btn-danger">Удалить пост</button>
+                            </form>
+                        </div>
+
+                        <div class="col-xs-1">
+                            <form action="~/NewPost" method="get">
+                                <input type="hidden" name="TopicId" value="@topic.Id" />
+                                <input type="hidden" name="ReplyTo" value="@post.Id" />
+                                <button type="submit" class="btn btn-primary">Ответить</button>
+                            </form>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-xs-1 col-xs-offset-11">
+                        <form action="~/NewPost" method="post">
+                            <input type="hidden" name="TopicId" value="@topic.Id" />
+                            <input type="hidden" name="ReplyTo" value="@post.Id" />
+                            <button type="submit" class="btn btn-primary">Ответить</button>
+                        </form>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+}
+@RenderPage("ParticalPages/_TopicModals.cshtml")
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+       function showTopicAlert() {
+            $("#newPostAlert").modal('show');
+        };
+        function showDeleteAlert() {
+            $("#deleteAlert").modal('show');
+        }
+    </script>
+}

@@ -1,0 +1,33 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@{
+    if (IsPost)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var PostId = 0;
+            int.TryParse(Request["Id"], out PostId);
+            var post = LogicProvider.PostLogic.GetPostById(PostId);
+            if (post == null)
+            {
+                Response.SetStatus(HttpStatusCode.BadRequest);
+            }
+            var user = LogicProvider.UserLogic.GetUserByLogin(User.Identity.Name);
+            if (post.User_Id == user.Id || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                LogicProvider.PostLogic.RemovePostById(post.Id);
+            }
+            var returnUrl = Request["ReturnUrl"];
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl = "~";
+            }
+
+            Response.Redirect(returnUrl);
+        }
+    }
+    else
+    {
+        Response.Redirect("~");
+    }
+}
+

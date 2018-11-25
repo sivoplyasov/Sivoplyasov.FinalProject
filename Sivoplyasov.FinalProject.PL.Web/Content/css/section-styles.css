@@ -1,0 +1,19 @@
+.section-header h4{
+        color: white; 
+}
+.section-header{
+    background-color: #1c819e; 
+    border-bottom: 1px solid #42464b;
+}
+.section{
+    margin-top: 10px;
+    border-top: 1px solid #42464b;
+    border-bottom: 1px solid #42464b;
+    box-shadow: 0 2px 6px 0px;
+}
+.section-heading{
+    border-right: 1px solid #42464b;
+}
+.section-heading:last-child{
+    border-right: none;
+}

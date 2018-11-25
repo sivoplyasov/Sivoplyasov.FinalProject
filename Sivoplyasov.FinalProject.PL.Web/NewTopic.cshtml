@@ -1,0 +1,87 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@using Sivoplyasov.FinalProject.Common.Entities;
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login");
+    }
+    Layout = "~/_Layout.cshtml";
+    var CategoryId = 0;
+    int.TryParse(Request["CategoryId"], out CategoryId);
+
+    if (IsPost)
+    {
+        var name = Request["topicName"];
+        var description = Request["description"];
+        var PostText = Request["textarea"];
+
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(PostText) || LogicProvider.CategoryLogic.GetCategoryById(CategoryId) == null)
+        {
+            Response.SetStatus(HttpStatusCode.BadRequest);
+        }
+
+        int userId = LogicProvider.UserLogic.GetUserByLogin(User.Identity.Name).Id;
+        try
+        {
+            LogicProvider.TopicLogic.Add(new Topic
+            {
+                Category_Id = CategoryId,
+                Name = name,
+                Author_Id = userId,
+                Description = description
+            });
+        }
+        catch
+        {
+            Response.SetStatus(HttpStatusCode.InternalServerError);
+        }
+
+        var topicId = LogicProvider.TopicLogic.GetLastTopicId();
+
+        try
+        {
+            LogicProvider.PostLogic.Add(new Post
+            {
+                Topic_Id = topicId,
+                User_Id = userId,
+                PostText = PostText
+            });
+        }
+        catch (ArgumentException)
+        {
+            Response.SetStatus(HttpStatusCode.InternalServerError);
+        }
+
+        Response.Redirect($"~/Category?Id={CategoryId}");
+    }
+}
+<div>
+    <form action="~/NewTopic" id="topicForm" method="post" role="form">
+        <div class="form-group" id="name-group">
+            <label class="control-label" for="name">
+                Заголовок:
+            </label>
+            <input type="text" class="form-control" id="topicName" name="topicName" placeholder="Заголовок">
+        </div>
+        <div class="form-group" id="decsription-group">
+            <label class="control-label" for="description">
+                Описание темы:
+            </label>
+            <input type="text" class="form-control" id="description" name="description" placeholder="Описание">
+        </div>
+        <div class="form-group" id="textarea-group">
+            <label class="control-label" for="textarea">
+                Текст поста:
+            </label>
+            <textarea class="form-control" id="textarea" name="textarea" rows="7" placeholder="Введите текст здесь"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default text-center">Создать тему</button>
+        <input type="hidden" name="CategoryId" value="@CategoryId" />
+    </form>
+</div>
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.js"></script>
+    <script src="~/Content/js/topic-validation.js"></script>
+}
+

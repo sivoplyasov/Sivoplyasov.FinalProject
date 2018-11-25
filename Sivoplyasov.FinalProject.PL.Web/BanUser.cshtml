@@ -1,0 +1,32 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@{
+    if (IsPost)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var UserId = 0;
+            int.TryParse(Request["Id"], out UserId);
+            var currentUser = LogicProvider.UserLogic.GetUserByLogin(User.Identity.Name);
+            var user = LogicProvider.UserLogic.GetUserById(UserId);
+            if (user == null)
+            {
+                Response.SetStatus(HttpStatusCode.BadRequest);
+            }
+            if ((User.IsInRole("Admin") || User.IsInRole("Moderator")) && currentUser.Id != user.Id)
+            {
+                LogicProvider.UserLogic.BanUser(user);
+            }
+            var returnUrl = Request["ReturnUrl"];
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl = "~";
+            }
+
+            Response.Redirect(returnUrl);
+        }
+    }
+    else
+    {
+        Response.Redirect("~");
+    }
+}

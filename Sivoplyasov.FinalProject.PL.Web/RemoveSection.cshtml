@@ -1,0 +1,31 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@{
+    if (IsPost)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var SectionId = 0;
+            int.TryParse(Request["Id"], out SectionId);
+            var section = LogicProvider.SectionLogic.GetSectionById(SectionId);
+            if (section == null || section.CountOfCategories != 0)
+            {
+                Response.SetStatus(HttpStatusCode.BadRequest);
+            }
+            if (User.IsInRole("Admin"))
+            {
+                LogicProvider.SectionLogic.RemoveSecitonById(SectionId);
+            }
+            var returnUrl = Request["ReturnUrl"];
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl = "~";
+            }
+
+            Response.Redirect(returnUrl);
+        }
+    }
+    else
+    {
+        Response.Redirect("~");
+    }
+}

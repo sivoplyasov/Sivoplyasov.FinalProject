@@ -1,0 +1,58 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@using Sivoplyasov.FinalProject.Common.Entities;
+@{
+
+    int PostId = 0;
+    int.TryParse(Request["Id"], out PostId);
+    var post = LogicProvider.PostLogic.GetPostById(PostId);
+    var user = LogicProvider.UserLogic.GetUserByLogin(User.Identity.Name);
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "~/_Layout.cshtml";
+        if (post == null || post.User_Id != user.Id)
+        {
+            Response.Redirect("~");
+        }
+
+        if (IsPost)
+        {
+            string PostText = Request["textarea"];
+
+            if (string.IsNullOrEmpty(PostText) || post == null || post.User_Id != user.Id)
+            {
+                Response.SetStatus(HttpStatusCode.BadRequest);
+            }
+            post.PostText = PostText;
+            LogicProvider.PostLogic.EditPost(post);
+            var returnUrl = Request["ReturnUrl"];
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl = "~";
+            }
+
+            Response.Redirect(returnUrl);
+        }
+    }
+    else
+    {
+        Response.Redirect("~");
+    }
+}
+
+<div>
+    <form action="~/EditPost" id="postForm" method="post" role="form">
+        <label class="control-label">
+            Редактировать пост:
+        </label>
+        <div class="form-group" id="text-group">
+            <textarea class="form-control" id="textarea" name="textarea" rows="7" placeholder="Введите текст здесь">@post.PostText</textarea>
+        </div>
+        <button type="submit" class="btn btn-default text-center">Сохранить изменения</button>
+        <input type="hidden" name="Id" value="@post.Id" />
+    </form>
+</div>
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js"></script>
+    <script src="~/Content/js/post-validation.js"></script>
+}

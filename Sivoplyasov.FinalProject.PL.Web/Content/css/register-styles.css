@@ -1,0 +1,22 @@
+body{
+    background-color:  #009ad6;
+}
+
+.header{
+    color: white;
+    background-color: #3adac2;
+    border-bottom: #17554c;
+}
+
+.register-form{
+    background-color: #f1f1f1;
+    border-radius: 6px;
+    box-shadow: 0 5px 5px 1px;
+}
+
+label{
+    color: rgb(0, 0, 0);
+}
+.btnarea{
+    margin: 10px;
+}

@@ -1,0 +1,122 @@
+﻿@using Sivoplyasov.FinalProject.Common.Entities
+@using Sivoplyasov.FinalProject.PL.Web
+@{
+    if (IsPost)
+    {
+        var email = Request["email"];
+        var username = Request["username"];
+        var login = Request["login"];
+        var password = Request["password"];
+
+        if (string.IsNullOrEmpty(login) ||  string.IsNullOrEmpty(password) || string.IsNullOrEmpty(email))
+        {
+            Response.SetStatus(HttpStatusCode.BadRequest);
+        }
+
+        if (RegisterModule.CanRegister(login, password))
+        {
+            try
+            {
+                LogicProvider.UserLogic.Add(new User
+                {
+                    Login = login,
+                    Password = password,
+                    Name = username,
+                    Email = email,
+                    Role = "User"
+                });
+            }
+            catch (ArgumentException)
+            {
+                Response.SetStatus(HttpStatusCode.InternalServerError);
+            }
+
+            var returnUrl = Request["ReturnUrl"];
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl = "~";
+            }
+            Response.Redirect(returnUrl);
+        }
+        else
+        {
+            PageData["RegisterFaled"] = true;
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/css/register-styles.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <form action="~/Registration" id="registerForm" method="post" role="form" class="text-center register-form col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4">
+                <div class="header row">
+                    <div><h4>Регистрация</h4></div>
+                </div>
+                <div class="row">
+                    @if (PageData["RegisterFaled"] == true)
+        {
+            <div class="col-xs-12 alert alert-danger alert-div text-center">Пользователь с таким логином уже существует</div>
+}
+                </div>
+                <label class="control-label" for="login">
+                    Логин
+                </label>
+                <div class="form-group" id="login-group">
+                    <input type="text" class="form-control" id="login" name="login" placeholder="Enter login">
+                </div>
+                <label class="control-label" for="password">
+                    Пароль
+                </label>
+                <div class="form-group" id="password-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+                </div>
+                <label class="control-label" for="retryPassword">
+                    Повторите пароль
+                </label>
+                <div class="form-group" id="retryPassword-group">
+                    <input type="password" class="form-control" id="retryPassword" name="retryPassword" placeholder="Retry Password">
+                </div>
+                <label class="control-label" for="email">
+                    E-mail
+                </label>
+                <div class="form-group" id="email-group">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                </div>
+                <label class="control-label" for="username">
+                    Отображаемое имя
+                </label>
+                <div class="form-group" id="name-group">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter visible name">
+                </div>
+                <div class="row">
+                    <div class="text-center btnarea">
+                        <button type="submit" class="btn btn-default text-center">Зарегестрироваться</button>
+                    </div>
+                </div>
+                <div class=" row text-center">
+                    <a href="/">На главную</a>
+                </div>
+                <div class=" row text-center">
+                    <a href="~/Login">Вход</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.js"></script>
+    <script src="~/Content/js/register-validation.js"></script>
+</body>
+
+</html>

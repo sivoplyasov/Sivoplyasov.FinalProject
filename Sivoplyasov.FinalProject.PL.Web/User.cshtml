@@ -1,0 +1,95 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@{
+    Layout = "~/_Layout.cshtml";
+    var userId = 0;
+    int.TryParse(Request["Id"], out userId);
+    if (userId < 0)
+    {
+        Response.SetStatus(HttpStatusCode.BadRequest);
+    }
+    var currentUser = LogicProvider.UserLogic.GetUserByLogin(User.Identity.Name);
+    var user = LogicProvider.UserLogic.GetUserById(userId);
+    if (user == null)
+    {
+        Response.SetStatus(HttpStatusCode.NotFound);
+    }
+
+    Page.Title = user.Name;
+}
+<link href="~/Content/css/profile-styles.css" rel="stylesheet" />
+<div class="user-profile">
+    <div class="row">
+        <div class="col-xs-3 text-center">
+            <div class="row">
+                <h4 class="col-xs-12">@user.Name</h4>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-xs-offset-4">
+                    <img src="~/Content/images/avatars/no-avatar.png" alt="useravatar" class="avatar img-responsive img-rounded">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-9">
+            <div class="row">
+                <h4 class="col-xs-12">Роль: @user.Role</h4>
+            </div>
+            <div class="row">
+                <h4 class="col-xs-12">Постов: @user.CountOfPosts</h4>
+            </div>
+            <div class="row">
+                <h4 class="col-xs-12">Дата регистрации: @user.DateOfRegistration</h4>
+            </div>
+            <div class="row">
+                @if (user.IsBaned)
+                {
+                    <h4 class="col-xs-12">Статус: Забанен</h4>
+                }
+                else
+                {
+                    <h4 class="col-xs-12">Статус: Активен</h4>
+                }
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+
+                <div class="form-group" id="text-group">
+                    <form action="~/ChangeRole" id="improveForm" method="post" role="form">
+                        <div class="col-xs-12">
+                            @if (user.Role == "User")
+                            {
+                                <button type="submit" class="btn btn-success row">Повысить пользователя</button>
+                                <input type="hidden" name="Role" value="Moderator" />
+                            }
+                            else if (user.Role == "Moderator")
+                            {
+                                <button type="submit" class="btn btn-warning row">Понизить пользователя</button>
+                                <input type="hidden" name="Role" value="User" />
+                            }
+                            <input type="hidden" name="Id" value="@user.Id" />
+                        </div>
+                    </form>
+                </div>
+            }
+            @if ((User.IsInRole("Admin") || User.IsInRole("Moderator")) && user.Id != currentUser.Id)
+            {
+                <div class="form-group" id="text-group">
+                    <form action="~/BanUser" id="banForm" method="post" role="form">
+                        @if (user.IsBaned)
+                        {
+                            <div class="col-xs-12">
+                                <button type="submit" class="btn btn-success row">Разбанить пользователя</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-xs-12">
+                                <button type="submit" class="btn btn-danger row">Забанить пользователя</button>
+                            </div>
+                        }
+                        <input type="hidden" name="Id" value="@user.Id" />
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+</div>

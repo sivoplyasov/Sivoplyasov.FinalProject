@@ -1,0 +1,33 @@
+﻿@using Sivoplyasov.FinalProject.Common.Entities
+@using Sivoplyasov.FinalProject.PL.Web
+@{
+    if (IsPost)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var TopicId = 0;
+            int.TryParse(Request["TopicId"], out TopicId);
+            var topic = LogicProvider.TopicLogic.GetTopicById(TopicId);
+            if (topic == null || topic.CountOfPosts != 0)
+            {
+                Response.SetStatus(HttpStatusCode.BadRequest);
+            }
+            if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                var result = LogicProvider.TopicLogic.RemoveTopicById(TopicId);
+            }
+            var returnUrl = Request["ReturnUrl"];
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                returnUrl = "~";
+            }
+
+            Response.Redirect(returnUrl);
+        }
+    }
+    else
+    {
+        Response.Redirect("~");
+    }
+}
+

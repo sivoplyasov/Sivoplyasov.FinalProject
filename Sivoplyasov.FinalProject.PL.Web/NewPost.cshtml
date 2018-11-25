@@ -1,0 +1,69 @@
+﻿@using Sivoplyasov.FinalProject.PL.Web
+@using Sivoplyasov.FinalProject.Common.Entities;
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("~/Login");
+    }
+    Layout = "~/_Layout.cshtml";
+    var TopicId = 0;
+    var ReplyTo = 0;
+    int.TryParse(Request["TopicId"], out TopicId);
+    int.TryParse(Request["ReplyTo"], out ReplyTo);
+    var topic = LogicProvider.TopicLogic.GetTopicById(TopicId);
+    if (topic.IsClosed)
+    {
+        Response.Redirect($"~/Topic?Id={TopicId}");
+    }
+
+    if (IsPost)
+    {
+        string PostText = Request["textarea"];
+
+        if (string.IsNullOrEmpty(PostText) || LogicProvider.TopicLogic.GetTopicById(TopicId) == null)
+        {
+            Response.SetStatus(HttpStatusCode.BadRequest);
+        }
+
+        int userId = LogicProvider.UserLogic.GetUserByLogin(User.Identity.Name).Id;
+        try
+        {
+            LogicProvider.PostLogic.Add(new Post
+            {
+                Topic_Id = TopicId,
+                User_Id = userId,
+                PostText = PostText,
+                Reply_Id = ReplyTo
+            });
+        }
+        catch (ArgumentException)
+        {
+            Response.SetStatus(HttpStatusCode.InternalServerError);
+        }
+
+        Response.Redirect($"~/Topic?Id={TopicId}");
+    }
+}
+
+<div>
+    <form action="~/NewPost" id="postForm" method="post" role="form">
+        @if (ReplyTo != 0)
+    {
+        <div>Ответ на пост от: @LogicProvider.UserLogic.GetUserById(LogicProvider.PostLogic.GetPostById(ReplyTo).User_Id).Name</div>
+}
+        <label class="control-label">
+            Текст поста:
+        </label>
+        <div class="form-group" id="text-group">
+            <textarea class="form-control" id="textarea" name="textarea" rows="7" placeholder="Введите текст здесь"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default text-center">Опубликовать пост</button>
+        <input type="hidden" name="TopicId" value="@TopicId" />
+        <input type="hidden" name="ReplyTo" value="@ReplyTo" />
+    </form>
+</div>
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.js"></script>
+    <script src="~/Content/js/post-validation.js"></script>
+}

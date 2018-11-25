@@ -1,0 +1,40 @@
+.post-footer{
+    background-color: #1c819e;
+    box-shadow: 0 4px 4px 0px;
+}
+
+.post{
+    margin-top: 15px;
+}
+
+.post-header{
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    background-color:  #005874;
+    border-bottom: 1px solid #e4e4e4;
+    color: white;
+}
+
+.post-header h4{
+    color: white;
+}
+
+.post-header h4:hover{
+    color: white;
+    color: #76d8ff;
+}
+
+.user-name{
+    margin-bottom: 10px;
+}
+.textarea{
+    background-color: #e6e6d4;
+    padding: 0px 25px;
+}
+.message{
+    margin: 20px 0px;
+}
+.avatar{
+    height: 70px;
+    width: 70px;
+}
