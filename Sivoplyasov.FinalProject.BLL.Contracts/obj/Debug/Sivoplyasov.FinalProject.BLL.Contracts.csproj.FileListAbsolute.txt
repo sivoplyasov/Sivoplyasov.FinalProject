@@ -1,0 +1,9 @@
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\bin\Debug\Sivoplyasov.FinalProject.BLL.Contracts.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\bin\Debug\Sivoplyasov.FinalProject.BLL.Contracts.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\bin\Debug\Sivoplyasov.FinalProject.Common.Entities.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\bin\Debug\Sivoplyasov.FinalProject.Common.Entities.pdb
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\obj\Debug\Sivoplyasov.FinalProject.BLL.Contracts.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\obj\Debug\Sivoplyasov.FinalProject.BLL.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\obj\Debug\Sivoplyasov.FinalProject.BLL.Contracts.csproj.CopyComplete
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\obj\Debug\Sivoplyasov.FinalProject.BLL.Contracts.dll
+C:\Users\Admin\Source\Repos\Sivoplyasov.FinalProject\Sivoplyasov.FinalProject.BLL.Contracts\obj\Debug\Sivoplyasov.FinalProject.BLL.Contracts.pdb
